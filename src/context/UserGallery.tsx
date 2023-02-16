@@ -16,11 +16,13 @@ export type IDetails = {
     image: string
 }
 
+const BASE_URL = import.meta.env.VITE_BASE_API_URL
+
 export const UserGalleryProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
 
     const saveMoment = async (details: IDetails) => {
         try {
-             const { data } = await axios.post(`http://localhost:5000/api/v1/moment`, details, {
+             const { data } = await axios.post(`${BASE_URL}/api/v1/moment`, details, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 }
@@ -32,7 +34,7 @@ export const UserGalleryProvider: React.FC<{children: React.ReactNode}> = ({chil
    const fetchMoments = async () => {
 
         try {
-             const { data } = await axios.get(`http://localhost:5000/api/v1/moment`, {
+             const { data } = await axios.get(`${BASE_URL}/api/v1/moment`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access-token')}`
                 }

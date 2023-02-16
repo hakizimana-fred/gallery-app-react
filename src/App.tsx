@@ -12,6 +12,7 @@ import {  PrivateRoute, PublicRoute } from './Routes'
 import React from 'react'
 
 function App() {
+  
   return (
     <React.Fragment>
       <UserAuthProvider>

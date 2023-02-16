@@ -1,17 +1,9 @@
-import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../Routes'
+
 
 export const Navbar = () => {
-  const [token, setToken] = useState<string | null>('')
   const navigate = useNavigate()
-  
-  useEffect(() => {
-    const isAuth = useAuth()     
-    if (isAuth) setToken(localStorage.getItem('access-token'))
-
-    console.log('from navbar', isAuth)
-  }, [token])
+  const token = localStorage.getItem('access-token')
 
   const logout = () => {
     localStorage.removeItem('access-token')
@@ -23,7 +15,7 @@ export const Navbar = () => {
         return (
           <>
           <Link to="/create"><li className="py-2 px-3 nav-item text-white">Create Moment</li></Link>
-          <li className="py-2 px-3 nav-item text-white" onClick={logout}>Logout</li>
+          <li className="py-2 px-3 nav-item text-white" onClick={logout} style={{cursor: 'pointer'}}>Logout</li>
           </>
         )
       }else {

@@ -13,11 +13,13 @@ export type ICredentials = {
     password: string
 }
 
+const BASE_URL = import.meta.env.VITE_BASE_API_URL
+
 export const UserAuthProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
 
     const signup = async (credentials: ICredentials) => {
         try {
-             const { data } = await axios.post(`http://localhost:5000/api/v1/user/signup`, credentials)
+             const { data } = await axios.post(`${BASE_URL}/api/v1/user/signup`, credentials)
              localStorage.setItem('access-token', data.data.token)
              return data
         }catch(err) {throw err}
@@ -25,7 +27,7 @@ export const UserAuthProvider: React.FC<{children: React.ReactNode}> = ({childre
 
     const login = async (credentials: ICredentials) => {
         try {
-             const { data } = await axios.post(`http://localhost:5000/api/v1/user/login`, credentials)
+             const { data } = await axios.post(`${BASE_URL}/api/v1/user/login`, credentials)
              localStorage.setItem('access-token', data.data.token)
              return data
         }catch(err) {throw err}
