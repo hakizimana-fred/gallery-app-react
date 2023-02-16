@@ -8,22 +8,34 @@ import { CreateMoment } from './pages/MomentformPage'
 import { UserGalleryProvider } from './context/UserGallery'
 import { ForgotPassword } from './pages/RequestResetPassword'
 import { ResetPassword } from './pages/ResetPassword'
+import {  PrivateRoute, PublicRoute } from './Routes'
+import React from 'react'
 
 function App() {
   return (
-    <UserAuthProvider>
-    <UserGalleryProvider>
-     <Navbar /> 
-     <Routes>
-      <Route path = '/' element={<LoginPage />} />
-      <Route path = '/signup' element={<SignupPage />} />
-      <Route path = '/gallery' element={<GalleryScreen />} />
-      <Route path = '/create' element={<CreateMoment />} />
-      <Route path = '/forgot-password' element={<ForgotPassword />} />
-      <Route path = '/change-password/:token' element={<ResetPassword />} />
-     </Routes>
-  </UserGalleryProvider>
-    </UserAuthProvider>
+    <React.Fragment>
+      <UserAuthProvider>
+       <UserGalleryProvider>
+      <Navbar />
+      <Routes> 
+        <Route  element={<PrivateRoute  />}>
+            <Route  path="/create" element={<CreateMoment />} />
+            <Route  path="/gallery" element={<GalleryScreen />} />
+        </Route>
+
+         <Route  element={<PublicRoute  />}>
+            <Route  path="/" element={<LoginPage />} />
+            <Route  path="/signup" element={<SignupPage />} />
+        </Route>
+
+            <Route  path="/forgot-password" element={<ForgotPassword />} />
+            <Route  path="/change-password/:token" element={<ResetPassword/>} />
+       
+
+      </Routes>
+      </UserGalleryProvider>
+      </UserAuthProvider>
+    </React.Fragment>
   )
 }
 

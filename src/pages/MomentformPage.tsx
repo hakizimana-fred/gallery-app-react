@@ -1,11 +1,13 @@
 import { useContext, useState } from "react"
 import { GalleryContext } from "../context/UserGallery"
 import FileBase from 'react-file-base64';
+import { useNavigate } from "react-router-dom";
 
 export const CreateMoment = () => {
     const [ details, setDetails ] = useState({title: "", description: "", image: ""})
     const { saveMoment } = useContext(GalleryContext)
     const [warnings, setWarnings] = useState({})
+    const navigate = useNavigate()
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => setDetails(prev => ({...prev, [e.target.name]: e.target.value}))
 
@@ -17,7 +19,9 @@ export const CreateMoment = () => {
             setWarnings(errors)    
             return
           }
-         const data  = await saveMoment(details)  
+         const data  = await saveMoment(details) 
+         if(data) return navigate('/gallery')
+
         }catch(err) {
           console.log(err)
         }

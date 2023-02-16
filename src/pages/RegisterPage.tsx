@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext, ICredentials } from '../context/UserContext'
 
 export const SignupPage = () => {
@@ -72,7 +72,7 @@ export const SignupPage = () => {
         Signup
      </button>
      <div className="flex flex-row justify-between">
-     <a href="#" className="text-indigo-800">Already have an account? Login </a>
+     <Link to="/" className="text-indigo-800">Already have an account? Login </Link>
      </div>
    </form>
     )
