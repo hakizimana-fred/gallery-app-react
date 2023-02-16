@@ -1,7 +1,7 @@
 import {   Navigate, Outlet } from 'react-router-dom';
 
 
-function useAuth() {
+export function useAuth() {
   return Boolean(localStorage.getItem('access-token'))
   
 }
