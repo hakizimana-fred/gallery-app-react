@@ -1,15 +1,37 @@
 import { useContext, useState } from "react"
 import { GalleryContext } from "../context/UserGallery"
+import FileBase from 'react-file-base64';
 
 export const CreateMoment = () => {
     const [ details, setDetails ] = useState({title: "", description: "", image: ""})
     const { saveMoment } = useContext(GalleryContext)
+    const [warnings, setWarnings] = useState({})
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => setDetails(prev => ({...prev, [e.target.name]: e.target.value}))
 
-    const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log('well then', details)
+        try{
+          const errors = validate(details)
+          if (Object.keys(errors).length > 0) {
+            setWarnings(errors)    
+            return
+          }
+         const data  = await saveMoment(details)  
+        }catch(err) {
+          console.log(err)
+        }
+    }
+
+    const validate = (details: any) => {
+      const errors: any = {}
+      if (!details.title) errors.title = "Title is required"
+      if (details.title.length < 3) errors.title = "Title is must be atleast 3 chars long"
+      if (!details.description) errors.description = "description is required"
+      if (details.description.length < 6) errors.description = "description must be atleast 6 chars long"
+      if (!details.image) errors.image = "image is requried"
+
+      return errors
     }
 
     return (
@@ -18,20 +40,29 @@ export const CreateMoment = () => {
         onSubmit={onSubmit}
       
       >
+       {Object.keys(warnings).length > 0 && Object.entries(warnings).map(([key, value]) => ( 
+         <div role="alert">
+         <div className="mt-3 bg-red-500 text-white font-bold rounded-t px-4 py-2">
+         </div>
+         <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+           <p>{value as string}</p>
+         </div>
+       </div> 
+        ))}
         <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900">
           Create Gallery
         </h2>
         <div>
         <div className="mb-4">
-        <label htmlFor="image" className="block text-gray-700 font-bold mb-2">
+        
+       <label htmlFor="image" className="block text-gray-700 font-bold mb-2">
           Select an image to upload
         </label>
-        <input
-          type="file"
-          name="image"
-          id="image"
+        <FileBase
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
+          type="file"
+          multiple={false}
+          onDone={({ base64 }: any) => setDetails({ ...details, image: base64 })} />
       </div>
         </div>
         <div>

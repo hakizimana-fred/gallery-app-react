@@ -4,8 +4,8 @@ export const Navbar = () => {
            <div className="container mx-auto flex justify-between">
               <div className="logo text-3xl text-white">Moments</div> 
               <ul className="flex">
-                <li className="py-2 px-3 nav-item text-white">Moments</li>
                 <li className="py-2 px-3 nav-item text-white">Login</li>
+                <li className="py-2 px-3 nav-item text-white">Create Moment</li>
               </ul>
             </div> 
         </nav>

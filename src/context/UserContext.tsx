@@ -1,9 +1,7 @@
 import { createContext } from 'react'
 import axios from 'axios'
 
-
 export const AuthContext = createContext({} as UserContextProps)
-
 
 type UserContextProps = {
     signup: (credentials: ICredentials) => object
@@ -15,14 +13,12 @@ export type ICredentials = {
     password: string
 }
 
-
-
 export const UserAuthProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
 
     const signup = async (credentials: ICredentials) => {
         try {
              const { data } = await axios.post(`http://localhost:5000/api/v1/user/signup`, credentials)
-             console.log(data)
+             localStorage.setItem('access-token', data.data.token)
              return data
         }catch(err) {throw err}
     }
@@ -30,11 +26,10 @@ export const UserAuthProvider: React.FC<{children: React.ReactNode}> = ({childre
     const login = async (credentials: ICredentials) => {
         try {
              const { data } = await axios.post(`http://localhost:5000/api/v1/user/login`, credentials)
-             console.log(data)
+             localStorage.setItem('access-token', data.data.token)
              return data
         }catch(err) {throw err}
     }
-
 
 
     return(

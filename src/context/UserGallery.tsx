@@ -7,6 +7,7 @@ export const GalleryContext = createContext({} as GalleryContextProps)
 
 type GalleryContextProps = {
     saveMoment: (details: IDetails) => object
+    fetchMoments: () => object
 }
 
 export type IDetails = {
@@ -19,18 +20,33 @@ export const UserGalleryProvider: React.FC<{children: React.ReactNode}> = ({chil
 
     const saveMoment = async (details: IDetails) => {
         try {
-             const { data } = await axios.post(`https://andela-capstone-api-production.up.railway.app/api/user/signup`, details)
-             console.log(data)
+             const { data } = await axios.post(`http://localhost:5000/api/v1/moment`, details, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                }
+             })
              return data
         }catch(err) {throw err}
     }
 
+   const fetchMoments = async () => {
 
+        try {
+             const { data } = await axios.get(`http://localhost:5000/api/v1/moment`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+                }
+             })
+             const { data: {moments} } = data
+             return moments
+        }catch(err) {throw err}
+   }
 
     return(
         <GalleryContext.Provider
             value={{
                 saveMoment,
+                fetchMoments
                 
             }} 
         >
